@@ -24,9 +24,9 @@ public class AWSLambdaJRuby {
 		
 		//set argument of lambda function to ruby global variable as JSON format 
 		container.put("$lambda_arg", arg);
-		
-		// upload zip is extracted to /var/task directory
-		Object result = container.runScriptlet(PathType.ABSOLUTE, "/var/task/" + rubyFileName);
+		// uploaded zip is extracted to /var/task directory
+		container.setCurrentDirectory("/var/task");
+		Object result = container.runScriptlet(PathType.CLASSPATH,rubyFileName);
 		
 		return result == null ? null : result.toString();
 	}
