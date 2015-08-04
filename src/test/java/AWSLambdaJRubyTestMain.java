@@ -4,7 +4,7 @@ import java.util.Map;
 public class AWSLambdaJRubyTestMain {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Map data = new HashMap();
 		data.put("hoge", "foo");
 		String result = new AWSLambdaJRuby().handler(data, new MockContext());

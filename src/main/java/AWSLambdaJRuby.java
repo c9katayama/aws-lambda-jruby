@@ -1,3 +1,5 @@
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Map;
 
 import org.jruby.Ruby;
@@ -16,11 +18,15 @@ public class AWSLambdaJRuby {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public String handler(Map data, Context context) {
+	public String handler(Map data, Context context) throws Exception {
 		
 		ScriptingContainer container = new ScriptingContainer();
 		String arg = new Gson().toJson(data);
 		context.getLogger().log(arg);
+
+		//add std lib path
+		URL stdLibPath = getClass().getResource("/stdlib/").toURI().toURL();
+		container.addLoadPath(new URLClassLoader(new URL[]{stdLibPath}));
 		
 		//set argument of lambda function to ruby global variable as JSON format 
 		container.put("$lambda_arg", arg);
