@@ -15,3 +15,5 @@ Run ruby code on JRuby on AWS Lambda Java
   Zip file is created into build/distributions
  
 5. Run Lambda function
+
+  needs timeout of at least 60 sec for the first execution of the lambda
