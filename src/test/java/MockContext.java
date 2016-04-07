@@ -61,4 +61,16 @@ public class MockContext implements Context{
 		return logger;
 	}
 
+	@Override
+	public String getInvokedFunctionArn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getFunctionVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

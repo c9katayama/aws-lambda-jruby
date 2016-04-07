@@ -2,25 +2,56 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
+buildscript {
+    repositories { jcenter() }
+
+    dependencies {
+        classpath "com.github.jruby-gradle:jruby-gradle-jar-plugin:1.2.0"
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    compile (
-        'com.amazonaws:aws-lambda-java-core:1.0.0',
-        'com.amazonaws:aws-lambda-java-events:1.0.0',
-        'com.google.code.gson:gson:2.3.1',
-    )
-    compile files('lib/jruby.jar')
+sourceCompatibility = 1.8
+
+apply plugin: 'com.github.jruby-gradle.jar'
+
+jrubyJar {
+    initScript library()
+    from ('src/main/ruby') {
+        include '*.rb'
+    }
 }
 
+dependencies {
+    gems 'rubygems:aws-sdk:2.2.31'
+
+    compile (
+        'com.amazonaws:aws-lambda-java-core:1.1.0',
+        //'com.amazonaws:aws-lambda-java-events:1.1.0',
+	'org.jruby:jruby:9.0.5.0',
+    )
+    
+
+}
+
+configurations {
+    jrubyJar.extendsFrom gems
+}
+
+
 task buildZip(type: Zip) {
+    dependsOn jrubyJar
     from compileJava
-    from processResources              
+    from processResources
     into('lib') {
-        from configurations.runtime
-    }           
+         from('build/libs') {
+     	    include '*jruby-jruby.jar'
+	 }
+	 from configurations.runtime
+    } 
 }
 
 build.dependsOn buildZip
