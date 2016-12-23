@@ -8,7 +8,7 @@ Run ruby code on JRuby on AWS Lambda Java
 ```
 ./gradlew build
 ```
-3. Crate AWS Lambda fuction on AWS
+3. Create AWS Lambda fuction on AWS
   put "AWSLambdaJRuby::handler" to handler setting
   
 4. Upload zip file
