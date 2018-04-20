@@ -5,17 +5,20 @@ exec $@
 cd /usr/src/app/src/main/resources/
 # Remove all ruby code that is not a part of the stdlib
 rm -rf $(ls | grep -v stdlib)
-cd /usr/src/code/
 
-# Ensure the volumes paths are present
+cd /usr/src/code/
 src_dir=$(ls)
 build_dir='/usr/src/build'
+
+# Ensure the volumes paths are present
 [[ $src_dir ]] || { echo "Source code directory not found! (in /usr/src/code)"; exit 1; }
 [ -d "$build_dir" ] || { echo "Build output directory not found! (at $build_dir)"; exit 1; }
+
 cd $src_dir
 cp -r . /usr/src/app/src/main/resources/
 cd /usr/src/app/src/main/resources/
 jruby -S bundle install --path=vendor --without test development
+rm -rf spec
 
 cd /usr/src/app/
 ./gradlew build
