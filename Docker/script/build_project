@@ -14,6 +14,8 @@ build_dir='/usr/src/build'
 [ -d "$build_dir" ] || { echo "Build output directory not found! (at $build_dir)"; exit 1; }
 cd $src_dir
 cp -r . /usr/src/app/src/main/resources/
+cd /usr/src/app/src/main/resources/
+jruby -S bundle install --path=vendor --without test development
 
 cd /usr/src/app/
 ./gradlew build

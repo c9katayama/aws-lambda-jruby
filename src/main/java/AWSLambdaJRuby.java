@@ -26,14 +26,29 @@ public class AWSLambdaJRuby {
 
 		//add std lib path
 		URL stdLibPath = getClass().getResource("/stdlib/").toURI().toURL();
-		container.addLoadPath(new URLClassLoader(new URL[]{stdLibPath}));
-		
-		//set argument of lambda function to ruby global variable as JSON format 
-		container.put("$lambda_arg", arg);
+    container.addLoadPath(new URLClassLoader(new URL[]{stdLibPath}));
+
+		//set argument of lambda function to ruby global variable as JSON format
+    container.put("$lambda_arg", arg);
+    
 		// uploaded zip is extracted to /var/task directory
-		container.setCurrentDirectory("/var/task");
-		Object result = container.runScriptlet(PathType.CLASSPATH,rubyFileName);
-		
+    container.setCurrentDirectory("/var/task");
+
+    // Setup Bulder configs
+    container.runScriptlet("ENV['BUNDLE_GEMFILE'] = \"/var/task/Gemfile\"");
+    container.runScriptlet("ENV['GEM_HOME'] = \"/var/task/vendor\"");
+    container.runScriptlet("ENV['GEM_PATH'] = \"/var/task/vendor\"");
+
+    // Setup load the gems
+    container.runScriptlet("require 'rubygems'");
+    container.runScriptlet("require 'bundler/setup'");
+    container.runScriptlet("Bundler.require");
+
+    // Run main.rb
+    Object result = container.runScriptlet(PathType.CLASSPATH,rubyFileName);
+
+    context.getLogger().log("JRuby Execution Complete. Result - " + result.toString());
+
 		return result == null ? null : result.toString();
 	}
 

@@ -34,6 +34,10 @@ RUN cp /opt/jruby/lib/jruby.jar /usr/src/app/lib/jruby.jar
 RUN cp -r /opt/jruby/lib/ruby/stdlib/ src/main/resources/
 RUN touch /usr/src/app/src/main/resources/stdlib/.jrubydir
 
+# Add bundler to the stdlib dir in order to make it available to Java/JRuby
+RUN jruby -S gem install bundle --no-ri --no-rdoc
+RUN cp -r /opt/jruby/lib/ruby/gems/shared/gems/bundler*/lib/* /usr/src/app/src/main/resources/stdlib/
+
 # Do a gradlew build, which also fetches gradle for the container
 RUN ./gradlew build
 
