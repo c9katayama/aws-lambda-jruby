@@ -9,9 +9,7 @@ RUN add-apt-repository "deb http://http.debian.net/debian jessie-backports main"
     apt-get update && \
     apt-get install -t jessie-backports openjdk-8-jdk -y
 
-RUN apt-get update && apt-get install -y curl tar git tzdata zip
-RUN curl -s "https://get.sdkman.io" | bash
-RUN bash -c 'source "$HOME/.sdkman/bin/sdkman-init.sh" && sdk install gradle 4.6'
+RUN apt-get update && apt-get install -y curl tar
 
 # Add JRuby
 ENV JRUBY_VERSION 9.1.2.0
