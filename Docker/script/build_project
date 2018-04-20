@@ -15,6 +15,7 @@ build_dir='/usr/src/build'
 cd $src_dir
 cp -r . /usr/src/app/src/main/resources/
 cd /usr/src/app/src/main/resources/
+rm Gemfile.lock
 jruby -S bundle install --path=vendor --without test development
 
 cd /usr/src/app/
