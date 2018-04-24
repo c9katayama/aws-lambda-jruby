@@ -47,8 +47,6 @@ public class AWSLambdaJRuby {
     // Run main.rb
     Object result = container.runScriptlet(PathType.CLASSPATH,rubyFileName);
 
-    context.getLogger().log("JRuby Execution Complete. Result - " + result.toString());
-
 		return result == null ? null : result.toString();
 	}
 
